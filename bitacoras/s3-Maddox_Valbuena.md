@@ -15,17 +15,33 @@ Antes de abrir o ejecutar el programa, responde:
 
 1. **Que creo que va a ocurrir?**
   Esperaba que la búsqueda lineal encontrara el dato revisando elemento por elemento, y que fuera lenta   a medida que crece la cantidad de lecturas. Esperaba que la búsqueda binaria fuera mucho más rápida,    porque descarta la mitad de los datos en cada paso, pero solo si el arreglo está ordenado por el        campo  que se busca.
-
 2. **Que parte del programa o del algoritmo puede fallar?**
-[Indica una linea, bloque, dato o supuesto que quieras comprobar.]
-
-3. **Como comprobare mi prediccion?** [Describe una prueba pequena: entrada, paso manual o resultado esperado.]
+Tenía mis dudas sobre el uso de == para comparar los Strings en lugar de .equals(), ya que esto evalúa las referencias de los objetos y no su contenido. Asimismo, la búsqueda binaria iba a presentar fallas si el arreglo no se encontraba previamente ordenado por el campo de PM2.5
+3. **Como comprobare mi prediccion?** Ejecutando los cuatro experimentos de BancoDePruebas.java con distintos tamaños de datos (1.000, 100.000 y 1.000.000) y comparando el número de comparaciones y el tiempo que toma cada algoritmo.
 
 ## 3. Evidencia del laboratorio
 
 ### Resultado observado
 
-[Describe que ocurrio realmente al ejecutar o probar la solucion. No escribas solamente "funciono" o "no funciono". Incluye los datos de entrada y el resultado relevante.]
+Al correr IngestaSensores.main(), que ejecuta los cuatro experimentos de la semana, obtuve:
+
+**Experimento 1 — Búsqueda lineal:**
+| Lecturas | Comparaciones | Tiempo (ms) |
+|---|---|---|
+| 1.000 | 1.000 | 1,390 |
+| 100.000 |	100.000	| 3,801 |
+| 1.000.000	| 1.000.000	| 13,556 |
+
+**Experimento 2 — Lineal vs. Binaria:**
+
+**Experimento 3 — Dato inexistente (100.000 lecturas):**
+- Lineal → 100.000 comparaciones (peor caso)
+- Binaria → 17 comparaciones
+
+**Experimento 4 — Binaria por PM2.5 (arreglo sin ordenar por ese campo):**
+- Valores buscados que sí existen: 20
+- Encontrados por búsqueda lineal: 20/20
+- Encontrados por búsqueda binaria: 0/20
 
 ### Diferencia entre la prediccion y el resultado
 
@@ -116,12 +132,12 @@ Responde con honestidad:
 
 ## Lista de verificacion antes de entregar:
 
-- [] Escribi la prediccion antes de consultar el resultado.
-- [] Inclui evidencia concreta del laboratorio.
-- [] Explique un concepto sin depender de jerga.
-- [] Registre un vacío, una duda o un error real.
-- [] Trace al menos un caso paso a paso.
-- [] Justifique una decision del proyecto y una alternativa descartada.
+- [X] Escribi la prediccion antes de consultar el resultado.
+- [X] Inclui evidencia concreta del laboratorio.
+- [X] Explique un concepto sin depender de jerga.
+- [X] Registre un vacío, una duda o un error real.
+- [X] Trace al menos un caso paso a paso.
+- [X] Justifique una decision del proyecto y una alternativa descartada.
 - [] Registre mis commits y mi aporte individual.
-- [] Deje claro que queda pendiente.
-- [] Renombre el archivo con el formato `sXX-nombre.md`.
+- [X] Deje claro que queda pendiente.
+- [X] Renombre el archivo con el formato `sXX-nombre.md`.
