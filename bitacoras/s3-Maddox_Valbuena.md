@@ -11,8 +11,6 @@
 
 ## 2. Prediccion antes de ejecutar
 
-Antes de abrir o ejecutar el programa, responde:
-
 1. **Que creo que va a ocurrir?**
   Esperaba que la búsqueda lineal encontrara el dato revisando elemento por elemento, y que fuera lenta   a medida que crece la cantidad de lecturas. Esperaba que la búsqueda binaria fuera mucho más rápida,    porque descarta la mitad de los datos en cada paso, pero solo si el arreglo está ordenado por el        campo  que se busca.
 2. **Que parte del programa o del algoritmo puede fallar?**
@@ -86,52 +84,47 @@ Trazado de busquedaBinariaPorTimestamp buscando el timestamp que está en la pos
 | 3	| inicio = 6, fin = 7 | medio = (6+7)/2 = 6. Timestamp en posición 6 es menor al buscado por lo q se descarta |
 | 4	| inicio = 7, fin = 7 | medio = (7+7)/2 = 7. Timestamp en posición 7 coincide al buscado por lo q devuelve la posición 7 |
 
-**Completa o agrega filas si es necesario.** Si trabajaste con una estructura, dibuja su estado en cada paso o inserta aqui una imagen legible.
+Con solo 4 comparaciones se encontró el dato en un arreglo de 8 elementos, en vez de las 8 comparaciones que hubiera necesitado la búsqueda lineal en el peor caso.
 
 ## 7. Decision de diseño
 
 Relaciona lo aprendido con la Plataforma de Monitoreo Ambiental Urbano.
 
-- **Problema que debiamos resolver:** [Situacion concreta del sistema.]
-- **Estructura, algoritmo o estrategia elegida:** [Nombre y uso.]
-- **Alternativa descartada:** [Otra opción razonable.]
-- **Por que elegimos la primera:** [Ventaja y costo de la decisión.]
-- **Que evidencia respalda la decisión:** [Prueba, medición o comportamiento observado.]
+- **Problema que debiamos resolver:** la Plataforma de Monitoreo Ambiental Urbano necesita encontrar lecturas específicas (por timestamp, por estación, por nivel de PM2.5) dentro de un volumen de datos que puede crecer hasta el millón de registros, sin que la búsqueda se vuelva demasiado lenta.
+- **Estructura, algoritmo o estrategia elegida:** búsqueda binaria (busquedaBinariaPorTimestamp) para las consultas por timestamp, ya que GeneradorDatos produce los timestamps en orden cronológico ascendente, cumpliendo la precondición del algoritmo.
+- **Alternativa descartada:** usar búsqueda binaria también para las consultas por PM2.5.
+- **Por que elegimos la primera:** la búsqueda binaria reduce el costo de O(n) a O(log n), lo cual se traduce en una diferencia enorme a gran escala (20 comparaciones contra 1.000.000 con un millón de lecturas). Para PM2.5 se descartó porque los datos no vienen ordenados por ese campo, y usar binaria ahí daría resultados incorrectos sin ningún aviso de error, lo cual es peor que ser simplemente lento.
+- **Que evidencia respalda la decisión:** los resultados del Experimento 2 (50.000x más eficiente con 1.000.000 de lecturas) respaldan usar binaria para timestamp. Los resultados del Experimento 4 (0 de 20 valores encontrados) respaldan no usarla todavía para PM2.5.
 
 ## 8. Aporte al proyecto
 
-- **Archivo(s) o modulo(s) trabajado(s):** [Rutas dentro del repositorio.]
-- **Cambio realizado:** [Describe la funcionalidad agregada o modificada.]
-- **Como se conecta con la capa anterior:** [Explica la integración.]
-- **Que queda pendiente para la siguiente semana:** [Tarea concreta.]
+- **Archivo(s) o modulo(s) trabajado(s):** src/BuscadorLecturas.java, src/GeneradorDatos.java, src/BancoDePruebas.java, src/IngestaSensores.java, docs/decisiones.md
+- **Cambio realizado:** se agregó la clase BuscadorLecturas con búsqueda lineal y binaria por timestamp, búsqueda por estación (corrigiendo el uso de == por .equals()), y búsqueda binaria por PM2.5. Se creó GeneradorDatos para producir datos sintéticos de prueba. Se agregaron cuatro experimentos en BancoDePruebas que miden y comparan el costo de cada algoritmo, integrados desde el único punto de entrada del proyecto (IngestaSensores.main()). Se documentaron las decisiones de diseño en docs/decisiones.md.
+- **Como se conecta con la capa anterior:** BuscadorLecturas y BancoDePruebas reutilizan LecturaSensor y RepositorioLecturas de semanas anteriores; el único main() sigue estando en IngestaSensores, que ahora además de la ingesta llama a los experimentos de la Semana 3.
+- **Que queda pendiente para la siguiente semana:** ordenar el arreglo por PM2.5 antes de aplicar búsqueda binaria sobre ese campo, para que deje de fallar sin dar un aviso o alertas.
 
 ## 9. Commits realizados
 
-Registra los commits que muestran tu aporte individual.
-
 | Commit | Mensaje | Que demuestra |
 |---|---|----|
-| [hash corto] | [mensaje del commit] | [Cambio realizado] |
-| [hash corto] | [mensaje del commit]	| [Cambio realizado] |
+| d386330 | semana 3: búsqueda lineal, binaria y experimentos de eficiencia | Agrega BuscadorLecturas, GeneradorDatos y BancoDePruebas completos: búsqueda lineal, búsqueda binaria, corrección del bug == vs .equals(), los 4 experimentos de eficiencia, y la documentación de decisiones en docs/decisiones.md. |
 
 ## 10. Reexplicacion final
 
-Despues del taller, vuelve a responder la pregunta de la semana en cinco lineas o menos. Esta respuesta debe ser mas precisa que la de la seccion 4 y debe incluir la razon de tu decision tecnica.
-
-> [Escribe aqui tu reexplicacion final.]
+La búsqueda binaria es más eficiente que la lineal porque descarta la mitad de los datos restantes en cada paso, en vez de revisarlos uno por uno, logrando pasar de un crecimiento O(n) a uno O(log n). Sin embargo, esa eficiencia depende por completo de una precondición: que el arreglo esté ordenado según el campo que se busca. Elegimos usarla para timestamp porque esa precondición se cumple naturalmente en nuestros datos, pero no para PM2.5, porque ahí la precondición se incumple y el algoritmo falla sin avisar.
 
 ## 11. Reflexion individual
 
 Responde con honestidad:
 
 1. **Lo que ahora puedo hacer y antes no podia:**
-  [Respuesta.]
+Implementar y comparar experimentalmente búsqueda lineal y binaria, midiendo su costo real en comparaciones en vez de solo confiar en la teoría.
 2. **El error o supuesto que mas me enseño:**
-  [Respuesta.]
+Asumir que un algoritmo correcto siempre da resultados correctos. La búsqueda binaria estaba bien implementada y aun así falló por completo con PM2.5, porque el problema no estaba en el código sino en una precondición incumplida.
 4. **La pregunta que llevaria a la proxima clase:**
-  [Respuesta.]
+¿Es conveniente mantener los datos siempre ordenados por varios campos a la vez, o el costo de reordenar constantemente termina siendo peor que el beneficio de la búsqueda binaria?
 6. **Que parte del trabajo fue realmente mia:**
-  [Respuesta concreta.]
+Realicé toda la guía yo siguiendo las indicaciones del documento brindado por el profesor. Además de hacer cada parte de la bitácora a conciencia para asegurar un aprendizaje que puede servir para el desarrollo y continuidad de la carrera. 
 
 ## Lista de verificacion antes de entregar:
 
@@ -141,6 +134,6 @@ Responde con honestidad:
 - [X] Registre un vacío, una duda o un error real.
 - [X] Trace al menos un caso paso a paso.
 - [X] Justifique una decision del proyecto y una alternativa descartada.
-- [] Registre mis commits y mi aporte individual.
+- [X] Registre mis commits y mi aporte individual.
 - [X] Deje claro que queda pendiente.
 - [X] Renombre el archivo con el formato `sXX-nombre.md`.
