@@ -53,40 +53,38 @@ La predicción se cumplió en líneas generales: la búsqueda lineal creció de 
 
 ### Error o comportamiento inesperado
 
-- **Que ocurrió?** - En el Experimento 4, la búsqueda binaria por PM2.5 no encontró ningún valor, a pesar de que los 20 valores buscados sí estaban presentes en el arreglo (la búsqueda lineal sí los encontró todos).
+- **Que ocurrió?** - En el Experimento 4, la búsqueda binaria por PM2.5 no encontró ningún valor, a pesar de que los 20 valores buscados sí estaban presentes en el arreglo, mientras que la búsqueda lineal sí los encontró todos).
 - **Por que ocurrió?** - Porque GeneradorDatos genera el PM2.5 con un valor aleatorio (5 + azar.nextDouble() * 55), así que el arreglo no queda ordenado por ese campo. La búsqueda binaria tiene como precondición que los datos estén ordenados ascendentemente según el campo por el que se busca; al no cumplirse esa condición, el algoritmo descarta mitades del arreglo basándose en comparaciones que ya no tienen sentido, y termina "saltándose" la posición real del dato sin encontrarlo.
 - **Como lo corregimos o que falta corregir?** - Por ahora no se corrigió: se documentó como una limitación conocida en docs/decisiones.md. La búsqueda binaria por PM2.5 se conserva únicamente como experimento demostrativo de qué pasa cuando se incumple una precondición. Para usarla de forma confiable, habría que ordenar el arreglo por PM2.5 antes de buscar (tarea que queda pendiente para la Semana 4).
-Un segundo error, más chico, fue el de comparar String con == en el método buscarPorEstacionDefectuoso. Ocurrió porque == compara si dos referencias apuntan al mismo objeto en memoria, no si el contenido de los textos es igual. Se corrigió reemplazando ese método completo por buscarPorEstacion, que usa .equals() en vez de ==.
+Un segundo error, fue el de comparar String con == en el método buscarPorEstacionDefectuoso. Ocurrió porque == compara si dos referencias apuntan al mismo objeto en memoria, no si el contenido de los textos es igual. Se corrigió reemplazando ese método completo por buscarPorEstacion, que usa .equals() en vez de ==.
 
 ## 4. Explicacion en lenguaje llano
 
-Explica el concepto principal como se lo explicarias a una persona de doce anos. Usa entre tres y cinco lineas y evita palabras tecnicas que no expliques.
-
-> [Escribe aqui tu explicacion.]
+Imagina que tienes una fila de 100 lockers numerados, y en cada uno hay un papelito con un número. Si buscas un papelito revisando locker por locker desde el 1, en el peor de los casos vas a tener que abrir los 100. Pero si los papelitos ya están ordenados de menor a mayor, puedes abrir directamente el del medio: si el número que buscas es más grande, sigues buscando solo en la mitad de arriba; si es más pequeño, sigues solo en la mitad de abajo. Así, en vez de abrir 100 lockers, abres por mucho 7. Eso es búsqueda binaria: solo funciona si los lockers ya están ordenados; si no lo están, el truco de ir a la mitad deja de servir y puedes no encontrar el papelito aunque esté ahí.
 
 ### Ejemplo o analogia
 
-[Relaciona el concepto con una situacion cotidiana. Explica que representa cada parte de la analogia y donde deja de ser exacta.]
+Es como buscar tu asiento en un estadio de fútbol numerado. Si no supieras que las sillas están numeradas en orden, tendrías que caminar puesto por puesto desde la entrada hasta encontrar el tuyo. Pero como sabes que están en orden, haces otra cosa: vas a la mitad de la tribuna, miras el número que hay ahí, y si el tuyo es mayor sigues buscando solo hacia la derecha; si es menor, sigues solo hacia la izquierda. Así, en pocos pasos llegas a tu silla exacta, en vez de recorrer todo el estadio. Esa analogía deja de funcionar si un día reorganizan las sillas por orden de llegada de la gente, en lugar de por número. Ahí ya no sirve el truco de ir a la mitad, porque el orden de las sillas ya no tiene nada que ver tu número de silla, es lo mismo que le pasó a la búsqueda binaria con PM2.5: el algoritmo asumía un orden que en realidad no existía.
 
 ## 5. El vacio que encontre
 
 Al intentar explicar el tema, identifica el punto que aun no comprendes bien.
 
-- **Mi duda concreta es:** [Pregunta especifica, no "no entiendo nada".]
-- **Lo que ya puedo explicar es:** [Parte que si comprendes.]
-- **Para resolver la duda consulte:** [Clase, lectura, experimento, companero u otra fuente.]
-- **Ahora lo entiendo asi:** [Respuesta escrita con tus palabras.]
+- **Mi duda concreta es:** ¿Por qué la búsqueda binaria no lanza ningún error o aviso cuando el arreglo no está ordenado?
+- **Lo que ya puedo explicar es:** por qué la búsqueda binaria es mucho más rápida que la lineal cuando el arreglo sí está ordenado, y por qué hay que usar .equals() en vez de == para comparar el contenido de dos String.
+- **Para resolver la duda consulte:** la explicación del punto 32 de la guía sobre por qué el PM2.5 se genera con un valor aleatorio y no queda ordenado. Además le pregunte a Claude para afianzar el concepto.
+- **Ahora lo entiendo así:** la búsqueda binaria no verifica su propia precondición porque eso agregaría trabajo extra, donde tiene que recorrer todo el arreglo para chequear que esté ordenado le haría perder la ventaja de velocidad que tiene. El algoritmo confía en que quien lo llama ya garantizó el orden. Por eso es tan importante documentar las precondiciones: si no se cumplen, el algoritmo no avisa, simplemente da respuestas equivocadas
 
 ## 6. Trazado de la solucion
 
-Escoge una ejecucion, recorrido o caso representativo y trazalo paso a paso. Incluye los valores importantes despues de cada paso.
+Trazado de busquedaBinariaPorTimestamp buscando el timestamp que está en la posición 7 de un arreglo de 8 elementos ordenados
 
 | Paso | Estado de los datos o estructura | Decisión o resultado |
 |---|---|---|
-| 1 | [Estado inicial] | [Que ocurre] |
-| 2 | [Siguiente estado] | [Que ocurre] |
-| 3	| [Siguiente estado] | [Que ocurre] |
-| 4	| [Estado final] | [Que ocurre] |
+| 1 | inicio = 0, fin = 7 | medio = (0+7)/2 = 3. Timestamp en posición 3 es menor al buscado por lo que se descarta la mitad izquierda |
+| 2 | inicio = 4, fin = 7 | medio = (4+7)/2 = 5. Timestamp en posición 5 es menor al buscado por lo que se descarta la mitad izquierda |
+| 3	| inicio = 6, fin = 7 | medio = (6+7)/2 = 6. Timestamp en posición 6 es menor al buscado por lo q se descarta |
+| 4	| inicio = 7, fin = 7 | medio = (7+7)/2 = 7. Timestamp en posición 7 coincide al buscado por lo q devuelve la posición 7 |
 
 **Completa o agrega filas si es necesario.** Si trabajaste con una estructura, dibuja su estado en cada paso o inserta aqui una imagen legible.
 
