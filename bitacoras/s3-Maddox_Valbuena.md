@@ -33,6 +33,11 @@ Al correr IngestaSensores.main(), que ejecuta los cuatro experimentos de la sema
 | 1.000.000	| 1.000.000	| 13,556 |
 
 **Experimento 2 — Lineal vs. Binaria:**
+| Lecturas | Lineal | Binaria |
+|---|---|---|
+| 1.000 | 1.000 | 10 |
+| 100.000 | 100.000 | 17 |
+| 1.000.000 | 1.000.000 | 20 |
 
 **Experimento 3 — Dato inexistente (100.000 lecturas):**
 - Lineal → 100.000 comparaciones (peor caso)
@@ -44,14 +49,14 @@ Al correr IngestaSensores.main(), que ejecuta los cuatro experimentos de la sema
 - Encontrados por búsqueda binaria: 0/20
 
 ### Diferencia entre la prediccion y el resultado
-
-[Explica que coincidencias o diferencias encontraste y que las puede explicar.]
+La predicción se cumplió en líneas generales: la búsqueda lineal creció de forma proporcional al tamaño (O(n)), mientras que la binaria casi no creció (O(log n)), llegando a ser 50.000 veces más eficiente en comparaciones con 1.000.000 de datos. Lo que más interesante fue la magnitud del Experimento 4: no esperaba que la búsqueda binaria fallara en el 100% de los casos (0 de 20 encontrados) cuando el arreglo no está ordenado por el campo buscado. Pensé que fallaría en algunos casos, no en todos.
 
 ### Error o comportamiento inesperado
 
-- **Que ocurrio?** [Describe el problema sin ocultarlo.]
-- **Por que ocurrió?** [Explica la causa con la evidencia disponible.]
-- **Como lo corregimos o que falta corregir?** [Describe la solucion o el siguiente paso.]
+- **Que ocurrió?** - En el Experimento 4, la búsqueda binaria por PM2.5 no encontró ningún valor, a pesar de que los 20 valores buscados sí estaban presentes en el arreglo (la búsqueda lineal sí los encontró todos).
+- **Por que ocurrió?** - Porque GeneradorDatos genera el PM2.5 con un valor aleatorio (5 + azar.nextDouble() * 55), así que el arreglo no queda ordenado por ese campo. La búsqueda binaria tiene como precondición que los datos estén ordenados ascendentemente según el campo por el que se busca; al no cumplirse esa condición, el algoritmo descarta mitades del arreglo basándose en comparaciones que ya no tienen sentido, y termina "saltándose" la posición real del dato sin encontrarlo.
+- **Como lo corregimos o que falta corregir?** - Por ahora no se corrigió: se documentó como una limitación conocida en docs/decisiones.md. La búsqueda binaria por PM2.5 se conserva únicamente como experimento demostrativo de qué pasa cuando se incumple una precondición. Para usarla de forma confiable, habría que ordenar el arreglo por PM2.5 antes de buscar (tarea que queda pendiente para la Semana 4).
+Un segundo error, más chico, fue el de comparar String con == en el método buscarPorEstacionDefectuoso. Ocurrió porque == compara si dos referencias apuntan al mismo objeto en memoria, no si el contenido de los textos es igual. Se corrigió reemplazando ese método completo por buscarPorEstacion, que usa .equals() en vez de ==.
 
 ## 4. Explicacion en lenguaje llano
 
