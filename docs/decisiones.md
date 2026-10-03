@@ -102,3 +102,66 @@ Medición de eficiencia
 
 
 La Semana 4 podrá extender esta misma arquitectura para estudiar ordenamiento.
+
+
+## Decisiones semana-4 — Pivote de QuickSort
+
+**Semana:** 4
+
+**Problema:**
+QuickSort con el primer elemento como pivote produce particiones
+desbalanceadas cuando los datos ya vienen ordenados, que es como llegan
+de la red de sensores (orden cronológico). Con 50.000 lecturas ordenadas
+el programa terminó en `StackOverflowError` tras 731.635.497 comparaciones.
+
+**Alternativas:**
+- Pivote aleatorio.
+- Mediana de tres.
+
+**Decisión:**
+Se eligió el pivote aleatorio: antes de particionar, se intercambia el
+primer elemento del tramo con uno elegido al azar.
+
+**Justificación:**
+Con datos ordenados, el pivote aleatorio terminó en 945.672 comparaciones
+en vez de fallar. Con datos desordenados pasó de 900.318 a 992.330
+comparaciones, un costo pequeño. Es la opción más corta de implementar y
+ningún patrón de entrada, como el orden cronológico, la degrada de forma
+sistemática.
+
+**Consecuencia:**
+Los resultados de QuickSort varían ligeramente entre ejecuciones porque el
+pivote es aleatorio. Se pierde reproducibilidad exacta a cambio de evitar el
+peor caso con los datos reales de la red.
+
+---
+
+##Ordenamiento y búsqueda
+
+**Problema:**
+Ordenar por PM2.5 el mismo arreglo que se consulta por timestamp destruye
+el orden cronológico. La lectura sigue existiendo, pero la búsqueda binaria
+por timestamp deja de cumplir su precondición (datos ordenados por el
+criterio de búsqueda).
+
+**Alternativas:**
+- Trabajar sobre una copia.
+- Restaurar el orden después del ranking.
+- Mantener índices separados por criterio.
+
+**Decisión:**
+`ordenarPorPm25` ahora ordena una copia y la devuelve. El arreglo original
+no se modifica.
+
+**Justificación:** 
+Después del cambio, la consulta binaria por timestamp encontró la lectura en
+la posición 73412 con 16 comparaciones, igual que antes del ranking, y el
+arreglo siguió ordenado por timestamp. Restaurar el orden costaría un nuevo
+ordenamiento cada vez, y los índices separados agregan complejidad que no se
+justifica todavía con dos criterios.
+
+**Consecuencia:**
+Cada ranking cuesta memoria adicional (una copia del arreglo) y el tiempo de
+copiar. A cambio, la búsqueda por timestamp nunca se ve afectada. Si en el
+futuro hay muchos criterios o actualizaciones frecuentes, habría que
+reconsiderar los índices separados.
