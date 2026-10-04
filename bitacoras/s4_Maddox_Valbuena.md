@@ -1,13 +1,13 @@
-# Bitacora individual - Semana 4
+# Bitácora individual - Semana 4
 
 ## 1. Datos de la actividad
 
-- **Estudiante:** Maddox Santiago Valbuena Ossa
+- **Estudiante:** Maddox Santiago Valbuena Ossa.
 - **Semana:** 4
 - **Fecha del laboratorio:** [2026-10-02]
 - **Fecha del taller:** [2026-10-02]
 - **Tema principal:** Ordenamientos simples y avanzados, y comparación de eficiencia
-- **Pregunta de la semana:** Si ordenar es necesario para buscar rápidamente, cuanto cuesta ordenar y que consecuencias tiene hacerlo?
+- **Pregunta de la semana:** Sí ordenar es necesario para buscar rápidamente, cuánto cuesta ordenar y qué consecuencias tiene hacerlo?
 
 ## 2. Predicción antes de ejecutar
 
@@ -84,9 +84,9 @@ comparaciones; Paso 2 ranking de 5.0 a 60.0; Paso 3 sigue ordenado por
 timestamp (`true`), posición 73412 con 16 comparaciones, igual a la busqueda
 lineal.
 
-### Diferencia entre la prediccion y el resultado
+### Diferencia entre la predicción y el resultado
 
-Exp. 5: predije A (la encuentra normal). Con la solución de la copia, la
+Exp. 5: Con la solución de la copia, la
 búsqueda si la encuentra, pero eso no prueba mi predicción, porque no ejecute la
 version original que ordenaba el mismo arreglo.
 [PENDIENTE: ejecutar esa version (cambiar la línea a
@@ -126,13 +126,13 @@ el algoritmo debe comparar una por una.
 
 - **Mi duda concreta es:** cómo funcionan burbuja, selección e inserción, y por
   qué inserción hace solo 9.999 comparaciones con datos ordenados mientras que
-  selección sigue en casi 50 millones.
+  selección sigue en casi 50 millones. Otra duda fue el cómo realizar la gráfica.
 - **Lo que ya puedo explicar es:** por qué QuickSort con pivote en el primer
   elemento falla con datos ordenados (cada paso quita un solo elemento), y por
-  qué el ranking por PM2.5 sobre el mismo arreglo dana la búsqueda binaria.
+  qué el ranking por PM2.5 sobre el mismo arreglo daña la búsqueda binaria.
 - **Para resolver la duda, consulte:** un ejemplo paso a paso con `[5, 2, 4, 1]`
   explicado con el asistente de IA (Claude), y los resultados de los
-  Experimentos 1 y 2.
+  Experimentos 1 y 2. Le pedí ayuda a Claude para la creación de la gráfica. 
 - **Ahora lo entiendo así:** burbuja compara vecinos y empuja el mayor al final;
   selección busca el menor de lo que queda y lo coloca en su posición, por eso
   siempre revisa todo aunque esté ordenado; inserción mete cada elemento en su
@@ -178,22 +178,22 @@ Exp. 4 (de `StackOverflowError` a 945.672 comparaciones).
   `docs/decisiones.md`.
 - **Cambio realizado:** bandera de corte temprano en burbuja, pivote aleatorio
   en QuickSort, ranking por PM2.5 sobre una copia, y los cinco experimentos
-  invocados desde `IngestaSensores`.
+  llamados desde `IngestaSensores`.
 - **Como se conecta con la capa anterior:** los experimentos usan
   `BuscadorLecturas` y `LecturaSensor` de la Semana 3, y se llaman desde el
-  unico `main`.
+  único `main`.
 - **Que queda pendiente para la siguiente semana:** construir el monticulo que
-  HeapSort usa como caja negra (semana 6); ejecutar la version original del
+  HeapSort usa como caja negra; ejecutar la versión original del
   ranking para observar el fallo; merge a `main` y tag `H1`.
 
 ## 9. Commits realizados
 
-Para ver tus hashes: `git log --oneline`.
-
 | Commit | Mensaje | Que demuestra |
 |---|---|---|
-| `[hash]` | `[mensaje]` | [TUYO] |
-| `[hash]` | `[mensaje]` | [TUYO] |
+| `7a72860` | `implementar ordenamientos, experimentos y documentacion de la semana 4` | Corte temprano en burbuja, pivote aleatorio en QuickSort, ranking por PM2.5 sobre una copia, `BancoDeOrdenamiento` sin `main` y experimentos invocados desde `IngestaSensores` |
+| `1bcdc6b` | `agregar evidencia de la semana 4` | Evidencia de los experimentos de la semana |
+| `a5d61bf` | `docs: completar bitacora de semana 4` | Bitácora de la semana 4 completada |
+| `e5091ab` | `docs: agregar grafica de crecimiento y completar bitacora de semana 4` | Gráfica de crecimiento Inserción vs MergeSort (`docs/grafica_crecimiento.png`) |
 
 ## 10. Reexplicación final
 
@@ -213,20 +213,19 @@ Para ver tus hashes: `git log --oneline`.
    falla con cierto patron de datos.
 2. **El error o supuesto que más me enseño:**
    Pensar que ordenar por otro criterio no afectaba la búsqueda por timestamp
-   (mi predicción A), y dar por hecho que QuickSort siempre es rápido.
+    y dar por hecho que QuickSort siempre es rápido.
 3. **La pregunta que llevaría a la proxima clase:**
-   Si el sistema necesita varios criterios de orden con muchos datos, cuando
+   ¿Si el sistema necesita varios criterios de orden con muchos datos, cuando
    conviene mantener índices separados en vez de ordenar copias?
 4. **Que parte del trabajo fue realmente mia:**
-   Integre los archivos del profe al proyecto, resolvi que `BancoDePruebas` no
+   Integre los archivos del profe al proyecto. Agregue los cambios necesarios a los "TODO" en la clase de `Ordenador.java`. Resolvi que `BancoDePruebas` no
    aparecia porque la rama de la Semana 3 no estaba unida a `main`, ejecute los
    cinco experimentos y registre las mediciones. Para el codigo de los "TODO",
-   las decisiones y el borrador de esta bitacora usé ayuda de un asistente de
-   IA (Claude). [Ajusta esto a la politica de uso de IA de tu curso.]
+   las decisiones.
 
 ## Lista de verificación antes de entregar
 
-- [ ] Escribí la predicción antes de consultar el resultado. (Solo el Exp. 5; aclararlo.)
+- [ ] Escribí la predicción antes de consultar el resultado. -----> Solo lo hice en el Experimento 5.
 - [x] Incluí evidencia concreta del laboratorio.
 - [x] Explique un concepto sin depender de jerga.
 - [x] Registre un vacío, una duda o un error real.

@@ -104,7 +104,7 @@ Medición de eficiencia
 La Semana 4 podrá extender esta misma arquitectura para estudiar ordenamiento.
 
 
-## Decisiones semana-4 — Pivote de QuickSort
+## DEC-04 — Pivote de QuickSort
 
 **Semana:** 4
 
@@ -136,7 +136,7 @@ peor caso con los datos reales de la red.
 
 ---
 
-##Ordenamiento y búsqueda
+## DEC-05 — Ordenamiento y búsqueda
 
 **Problema:**
 Ordenar por PM2.5 el mismo arreglo que se consulta por timestamp destruye
